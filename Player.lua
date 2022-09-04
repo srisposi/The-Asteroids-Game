@@ -26,12 +26,12 @@ function Player(debugging)
             
             love.graphics.polygon(
                 fillType,
-                self.x - self.radius * (2/3 * math.cos(self.angle) + 0.5 * math.sin(self.angle)),
-                self.y + self.radius * (2/3 * math.cos(self.angle) - 0.5 * math.cos(self.angle)),
+                self.x - self.radius * (2 / 3 * math.cos(self.angle) + 0.5 * math.sin(self.angle)),
+                self.y + self.radius * (2 / 3 * math.sin(self.angle) - 0.5 * math.cos(self.angle)),
                 self.x - self.radius * self.thrust.flame * math.cos(self.angle),
                 self.y + self.radius * self.thrust.flame * math.sin(self.angle),
-                self.x - self.radius * (2/3 * math.cos(self.angle) - 0.5 * math.sin(self.angle)),
-                self.y + self.radius * (2/3 * math.cos(self.angle) + 0.5 * math.cos(self.angle))
+                self.x - self.radius * (2 / 3 * math.cos(self.angle) - 0.5 * math.sin(self.angle)),
+                self.y + self.radius * (2 / 3 * math.sin(self.angle) + 0.5 * math.cos(self.angle))
             )
         end,
 
@@ -53,7 +53,7 @@ function Player(debugging)
                     end
                 end
 
-                self:draw_flame_thrust("fill", { 255/ 255, 102/ 255, 25/225})
+                self:draw_flame_thrust("fill", { 255/ 255, 102/255, 25/225})
                 self:draw_flame_thrust("line", { 1, 0.16, 0 })
             end
 
