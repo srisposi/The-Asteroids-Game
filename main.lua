@@ -9,6 +9,7 @@ function love.load()
     local show_debugging = true
 
     player = Player(show_debugging)
+    game = Game()
 end                                                          
 
 function love.keypressed(key)
