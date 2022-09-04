@@ -23,18 +23,20 @@ function Player(debugging)
             local opacity = 1
 
             if debugging then
-                love.graphics.setColor(1, 1, 1, opacity)
+                love.graphics.setColor(1, 0, 0, opacity)
                 love.graphics.rectangle("fill", self.x -1, self.y-1, 2, 2)
                 love.graphics.circle("line", self.x, self.y, self.radius)
             end
+            
+            love.graphics.setColor(1, 1, 1, opacity)
 
             love.graphics.polygon(
                 "line",
                 self.x + ((4/3) + self.radius) * math.cos(self.angle),
                 self.y - ((4/3) + self.radius) * math.sin(self.angle),
-                self.x - self.radius * (2/3 * math.cos(self.angle) + math.sin(self.angle))
-                self.y + self.radius * (2/3 * math.sin(self.angle) - math.cos(self.angle))
-                self.x - self.radius * (2/3 * math.cos(self.angle) - math.sin(self.angle))
+                self.x - self.radius * (2/3 * math.cos(self.angle) + math.sin(self.angle)),
+                self.y + self.radius * (2/3 * math.sin(self.angle) - math.cos(self.angle)),
+                self.x - self.radius * (2/3 * math.cos(self.angle) - math.sin(self.angle)),
                 self.y + self.radius * (2/3 * math.sin(self.angle) + math.cos(self.angle))
             )
         end,
@@ -43,13 +45,13 @@ function Player(debugging)
                 local FPS = love.timer.getFPS()
                 local friction = 0.7
 
-                self.rotation. 360 / 180 * math.pi / FPS
+                self.rotation = 360 / 180 * math.pi / FPS
                 
                 if love.keyboard.isDown("a") or love.keyboard.isDown("left") or love.keyboard.isDown("kp4") then
                     self.angle = self.angle + self.rotation
                 end
 
-                if love.keyboard.isDown("d") or love.keyboard.isDown("rigth") or love.keyboard.isDown("kp6") then
+                if love.keyboard.isDown("d") or love.keyboard.isDown("right") or love.keyboard.isDown("kp6") then
                     self.angle = self.angle - self.rotation              
                 end
 
@@ -62,8 +64,8 @@ function Player(debugging)
                         self.thrust.y = self.thrust.y - friction * self.thrust.y / FPS
                     end
                 end  
-                self.x = self.x + self.thrust.mouse_x
-                self.y = self.y + self.thrust.mouse_y  
+                self.x = self.x + self.thrust.x
+                self.y = self.y + self.thrust.y 
             end
         } 
 end 
