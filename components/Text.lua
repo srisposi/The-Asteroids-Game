@@ -65,7 +65,7 @@ local love = require "love"
         
         draw = function (self, tbl_text, index)
             if self.opacity > 0 then
-                love.graphics.setColor(self.colors.r, self.color.g, self.colors.b, self.opacity)
+                love.graphics.setColor(self.colors.r, self.colors.g, self.colors.b, self.opacity)
                 love.graphics.setFont(fonts[font_size])
                 love.graphics.printf(self.text, self.x, self.y, wrap_width, align)
                 love.graphics.setFont(fonts["p"])

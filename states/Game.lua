@@ -29,6 +29,7 @@ function Game()
                     love.graphics.getWidth(),
                     "center"
             ):draw()
+            end
         end
     }
 
