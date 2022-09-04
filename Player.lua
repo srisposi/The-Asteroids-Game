@@ -67,8 +67,8 @@ function Player(debugging)
 
             love.graphics.polygon(
                 "line",
-                self.x + ((4/3) + self.radius) * math.cos(self.angle),
-                self.y - ((4/3) + self.radius) * math.sin(self.angle),
+                self.x + ((4/3) * self.radius) * math.cos(self.angle),
+                self.y - ((4/3) * self.radius) * math.sin(self.angle),
                 self.x - self.radius * (2/3 * math.cos(self.angle) + math.sin(self.angle)),
                 self.y + self.radius * (2/3 * math.sin(self.angle) - math.cos(self.angle)),
                 self.x - self.radius * (2/3 * math.cos(self.angle) - math.sin(self.angle)),
