@@ -1,7 +1,9 @@
 local love = require "love"
 local player = require "objects/Player"
-local Game = require "states/Game"
+local Game = require "./states/Game"
 local Text = require "../components/Text"
+
+math.randomseed(os.time())
 
 function love.load()
     love.mouse.setVisible(false)
@@ -11,6 +13,7 @@ function love.load()
 
     player = Player(show_debugging)
     game = Game()
+    game:startNewGame(player)
 end                                                          
 
 function love.keypressed(key)
@@ -35,16 +38,26 @@ function love.keyreleased(key)
     end
 end
 
-function love.update()
+function love.update(dt)
     mouse_x, mouse_y = love.mouse.getPosition()
+    
     if game.state.running then
         player:movePlayer()
+
+        for ast_index, asteroid in pairs(asteroids) do
+            asteroid:move(dt)
+        end
     end
 end              
 
 function love.draw()
     if game.state.running or game.state.paused then
-        player:draw()
+        player:draw(game.state.paused)
+
+        for _, asteroid in pairs(asteroids) do
+            asteroid:draw(game.state.paused)
+        end
+
         game:draw(game.state.paused)
     end
     
