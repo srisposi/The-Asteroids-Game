@@ -69,7 +69,18 @@ function Asteroids(x, y, ast_size, level)
             elseif self.y - self.radius > love.graphics.getHeight() then
                 self.y = - self.radius
             end
-        end    
+        end,
+        
+        destroy = function(self, asteroid_tbl, index, game)
+            local MIN_ASTEROID_SIZE = math.ceil(ASTEROID_SIZE / 8)
+            
+            if self.radius > MIN_ASTEROID_SIZE then
+                table.insert(asteroid_tbl, Asteroids(self.x, self.y, self.radius, game.level))
+                table.insert(asteroid_tbl, Asteroids(self.x, self.y, self.radius, game.level))
+            end
+
+            table.remove(asteroid_tbl, index)
+        end
 }
 end
 
