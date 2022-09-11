@@ -1,8 +1,11 @@
 local love = require "love"
+local Lazer = require "../objects/Lazer"
 
 function Player(debugging)
     local SHIP_SIZE = 30 
     local VIEW_ANGLE = math.rad(90)
+    local LAZER_DISTANCE = 0.6
+    local MAX_LAZERS = 10
 
     debugging = debugging or false
 
@@ -12,6 +15,7 @@ function Player(debugging)
         radius = SHIP_SIZE / 2,
         angle = VIEW_ANGLE,
         rotation = 0,
+        lazers={},
         thrusting = false,
         thrust = {
             x = 0,
@@ -33,6 +37,20 @@ function Player(debugging)
                 self.x - self.radius * (2 / 3 * math.cos(self.angle) - 0.5 * math.sin(self.angle)),
                 self.y + self.radius * (2 / 3 * math.sin(self.angle) + 0.5 * math.cos(self.angle))
             )
+        end,
+
+        shootLazer = function(self)
+            if #self.lazers < MAX_LAZERS then
+                table.insert(self.lazers, Lazer(
+                    self.x,
+                    self.y,
+                    self.angle
+                ))
+            end
+        end,    
+
+        destroyLazer = function(self, index)
+            table.remove(self.lazers, index)
         end,
 
         draw = function(self, faded)
@@ -78,6 +96,10 @@ function Player(debugging)
                 self.x - self.radius * (2/3 * math.cos(self.angle) - math.sin(self.angle)),
                 self.y + self.radius * (2/3 * math.sin(self.angle) + math.cos(self.angle))
             )
+
+            for _, lazer in pairs(self.lazers) do
+                lazer:draw(faded)
+            end
         end,
 
             movePlayer = function(self)
@@ -106,6 +128,7 @@ function Player(debugging)
                 self.x = self.x + self.thrust.x
                 self.y = self.y + self.thrust.y
                 
+                -- TODO: convertir en una función porque se utiliza en varios lados
                 if self.x + self.radius < 0 then
                     self.x = love.graphics.getWidth() + self.radius
                 elseif self.x - self.radius > love.graphics.getWidth() then
@@ -116,6 +139,14 @@ function Player(debugging)
                     self.y = love.graphics.getHeight() + self.radius
                 elseif self.y - self.radius > love.graphics.getHeight() then
                     self.y = - self.radius
+                end
+
+                for index, lazer in pairs(self.lazers) do
+                    lazer:move()
+                    
+                    if(lazer.distance > LAZER_DISTANCE * love.graphics.getWidth()) then
+                        self.destroyLazer(self, index)
+                    end
                 end
 
             end
