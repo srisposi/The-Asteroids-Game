@@ -4,7 +4,7 @@ function Lazer(x, y, angle)
     local LAZER_SPEED = 500
 
     return{
-        x = X,
+        x = x,
         y = y,
         x_vel = LAZER_SPEED * math.cos(angle) / love.timer.getFPS(),
         y_vel = -LAZER_SPEED * math.sin(angle) / love.timer.getFPS(),
