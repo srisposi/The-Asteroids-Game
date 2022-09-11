@@ -1,3 +1,4 @@
+require "globals"
 local love = require "love"
 local player = require "objects/Player"
 local Game = require "./states/Game"
@@ -9,9 +10,7 @@ function love.load()
     love.mouse.setVisible(false)
     mouse_x, mouse_y = 0, 0
 
-    local show_debugging = true
-
-    player = Player(show_debugging)
+    player = Player()
     game = Game()
     game:startNewGame(player)
 end                                                          
@@ -57,6 +56,11 @@ function love.update(dt)
         player:movePlayer()
 
         for ast_index, asteroid in pairs(asteroids) do
+            for _, lazer in pairs(player.lazers) do
+                if calculateDistance(lazer.x, lazer.y, asteroid.x, asteroid.y) < asteroid.radius then
+                    lazer:expload()
+                end
+            end    
             asteroid:move(dt)
         end
     end

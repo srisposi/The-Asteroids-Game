@@ -1,9 +1,8 @@
+require "globals"
 local lover = require "love"
 
 
-function Asteroids(x, y, ast_size, level, debugging)
-    debugging = debugging or false
-    
+function Asteroids(x, y, ast_size, level)
     local ASTEROID_VERT = 10
     local ASTEROID_JAG = 0.4
     local ASTEROID_SPEED = math.random(50) + (level * 2)
@@ -49,7 +48,7 @@ function Asteroids(x, y, ast_size, level, debugging)
 
         love.graphics.polygon("line", points)
 
-        if debugging then
+        if show_debugging then
             love.graphics.setColor(1, 0, 0)
             love.graphics.circle("line", self.x, self.y, self.radius)
         end

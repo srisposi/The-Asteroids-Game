@@ -1,13 +1,13 @@
-local love = require "love"
-local Lazer = require "../objects/Lazer"
+require "globals"
 
-function Player(debugging)
+local love = require "love"
+local Lazer = require "objects.Lazer"
+
+function Player()
     local SHIP_SIZE = 30 
     local VIEW_ANGLE = math.rad(90)
     local LAZER_DISTANCE = 0.6
     local MAX_LAZERS = 10
-
-    debugging = debugging or false
 
     return {
         x = love.graphics.getWidth() / 2,
@@ -79,7 +79,7 @@ function Player(debugging)
                 self:draw_flame_thrust("line", { 1, 0.16, 0 })
             end
 
-            if debugging then
+            if show_debugging then
                 love.graphics.setColor(1, 0, 0, opacity)
                 love.graphics.rectangle("fill", self.x -1, self.y-1, 2, 2)
                 love.graphics.circle("line", self.x, self.y, self.radius)
@@ -144,9 +144,17 @@ function Player(debugging)
                 for index, lazer in pairs(self.lazers) do
                     lazer:move()
                     
-                    if(lazer.distance > LAZER_DISTANCE * love.graphics.getWidth()) then
+                    if (lazer.distance > LAZER_DISTANCE * love.graphics.getWidth())
+                    and (lazer.exploading == 0) then
+                        lazer:expload()
+                    end
+
+                    if lazer.exploading == 0 then
+                        lazer:move()
+                    elseif lazer.exploading == 2 then
                         self.destroyLazer(self, index)
                     end
+                        
                 end
 
             end
