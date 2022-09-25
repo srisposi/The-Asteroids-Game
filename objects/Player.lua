@@ -3,7 +3,7 @@ require "globals"
 local love = require "love"
 local Lazer = require "objects.Lazer"
 
-function Player()
+function Player(num_lives)
     local SHIP_SIZE = 30 
     local EXPLOAD_DUR = 3
     local VIEW_ANGLE = math.rad(90)
@@ -27,6 +27,7 @@ function Player()
             big_flame = false,
             flame = 2.0
         },
+        lives = num_lives or 3,
 
         draw_flame_thrust = function (self, fillType, color)
             love.graphics.setColor(color)
@@ -113,9 +114,42 @@ function Player()
                 love.graphics.setColor(1, 234/255, 0 , opacity)
                 love.graphics.circle("fill", self.x, self.y , self.radius * 0.5)
             end
-
-
         end,
+
+        drawLives = function(self, faded)
+            local opacity = 1
+            if faded then
+                opacity = 0.2
+            end    
+
+            if self.lives == 2 then
+                love.graphics.setColor(1, 1, 0.5, opacity)
+            elseif self.lives == 1 then
+                love.graphics.setColor(1, 0.2, 0.2, opacity)
+            else
+                love.graphics.setColor(1, 1, 1, opacity)
+            end
+
+            local x_pos, y_pos = 45, 30
+
+            for i=1, self.lives do
+                if self.exploading then
+                    if i == self.lives then
+                        love.graphics.setColor(1,0,0)
+                    end
+                end
+                love.graphics.polygon(
+                    "line",
+                    (i * x_pos) + ((4/3) * self.radius) * math.cos(VIEW_ANGLE),
+                    y_pos - ((4/3) * self.radius) * math.sin(VIEW_ANGLE),
+                    (i * x_pos) - self.radius * (2/3 * math.cos(VIEW_ANGLE) + math.sin(VIEW_ANGLE)),
+                    y_pos + self.radius * (2/3 * math.sin(VIEW_ANGLE) - math.cos(VIEW_ANGLE)),
+                    (i * x_pos) - self.radius * (2/3 * math.cos(VIEW_ANGLE) - math.sin(VIEW_ANGLE)),
+                    y_pos + self.radius * (2/3 * math.sin(VIEW_ANGLE) + math.cos(VIEW_ANGLE))
+                )
+            end
+
+        end, 
 
             movePlayer = function(self)
                 self.exploading = self.expload_time > 0
