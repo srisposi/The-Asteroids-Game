@@ -9,10 +9,11 @@ math.randomseed(os.time())
 
 function love.load()
     love.mouse.setVisible(false)
+    local save_data = readJSON("save")
     mouse_x, mouse_y = 0, 0
 
     player = Player()
-    game = Game({high_score = 0})
+    game = Game(save_data)
     menu = Menu(game, player)
 end                                                          
 
