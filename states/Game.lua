@@ -2,7 +2,7 @@ local love = require "love"
 local Text = require "../components/Text"
 local Asteroids = require "../objects/Asteroids"
 
-function Game()
+function Game(save_data)
     return{
         level=1,
         state = {
@@ -11,6 +11,8 @@ function Game()
             running= false,
             ended = false
         },
+        score = 0,
+        high_score = save_data.high_score or 0,
 
         changeGameState = function (self, state)
             self.state.menu = state == "menu"
@@ -20,6 +22,36 @@ function Game()
         end,
 
         draw = function(self, faded)
+            local opacity = 1
+
+            if faded then
+                opacity = 0.5
+            end
+
+            Text(
+                "SCORE: " .. self.score,
+                -20,
+                10,
+                "h4",
+                false,
+                false,
+                love.graphics.getWidth(),
+                "right",
+                faded and opacity or 0.6
+            ):draw()
+
+            Text(
+                "HIGH SCORE: " .. self.high_score,
+                0,
+                10,
+                "h5",
+                false,
+                false,
+                love.graphics.getWidth(),
+                "center",
+                faded and opacity or 0.5
+            ):draw()
+
             if faded then
                 Text(
                     "PAUSED",

@@ -12,7 +12,7 @@ function love.load()
     mouse_x, mouse_y = 0, 0
 
     player = Player()
-    game = Game()
+    game = Game({high_score = 0})
     menu = Menu(game, player)
 end                                                          
 
