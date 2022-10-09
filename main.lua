@@ -14,9 +14,9 @@ function reset()
 
     sfx = SFX()
 
-    player = Player(3)
-    game = Game(save_data)
-    menu = Menu(game, player)
+    player = Player(3, sfx)
+    game = Game(save_data, sfx)
+    menu = Menu(game, player, sfx)
     destroy_ast = false
 end
 
@@ -87,7 +87,7 @@ function love.update(dt)
                         return
                     end
 
-                    player = Player(player.lives -1)
+                    player = Player(player.lives -1, sfx)
                 end
             end
             for _, lazer in pairs(player.lazers) do

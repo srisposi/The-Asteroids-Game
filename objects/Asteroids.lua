@@ -2,7 +2,7 @@ require "globals"
 local lover = require "love"
 
 
-function Asteroids(x, y, ast_size, level)
+function Asteroids(x, y, ast_size, level, sfx)
     local ASTEROID_VERT = 10
     local ASTEROID_JAG = 0.4
     local ASTEROID_SPEED = math.random(50) + (level * 2)
@@ -75,8 +75,9 @@ function Asteroids(x, y, ast_size, level)
             local MIN_ASTEROID_SIZE = math.ceil(ASTEROID_SIZE / 8)
             
             if self.radius > MIN_ASTEROID_SIZE then
-                table.insert(asteroid_tbl, Asteroids(self.x, self.y, self.radius, game.level))
-                table.insert(asteroid_tbl, Asteroids(self.x, self.y, self.radius, game.level))
+
+                table.insert(asteroid_tbl, Asteroids(self.x, self.y, self.radius, game.level, sfx))
+                table.insert(asteroid_tbl, Asteroids(self.x, self.y, self.radius, game.level, sfx))
             end
 
             if self.radius >= ASTEROID_SIZE / 2 then
@@ -91,6 +92,7 @@ function Asteroids(x, y, ast_size, level)
                 game.high_score = game.score
             end
 
+            sfx:playFX("asteroid_explosion")
             table.remove(asteroid_tbl, index)
         end
 }

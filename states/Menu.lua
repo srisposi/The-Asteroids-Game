@@ -1,7 +1,7 @@
 local love = require "love"
 local Button = require "../components/Button"
 
-function Menu(game, player)
+function Menu(game, player, sfx)
     local funcs = {
         newGame = function ()
             game:startNewGame(player)
@@ -27,6 +27,8 @@ function Menu(game, player)
 
             for name, button in pairs(buttons) do
                 if button:checkHover(mouse_x, mouse_y, 10) then
+                    sfx:playFX("option_select", "single")
+
                     if clicked then
                         button:click()
                     end
@@ -36,6 +38,10 @@ function Menu(game, player)
                     button:setTextColor(0.8, 0.2, 0.2)
 
                 else
+                    if self.focused == name then
+                        sfx:setFXPlayed(false)
+                    end
+                    
                     button:setTextColor(1,1,1)
                 end
             end
