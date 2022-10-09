@@ -1,21 +1,21 @@
-local love require "love"
+local love = require "love"
 
 function SFX()
-    local bgm = love.audio.newSource("src/sounds/bgm.mp3", "stream")
-    bgm:setVolumen(0.1)
+    local bgm = love.audio.newSource("src/sounds/bgm.mp3", "stream") -- the "stream" tells LÖVE to stream the file from disk, good for longer music tracks
+    bgm:setVolume(0.1)
     bgm:setLooping(true)
 
     local effects = {
-        ship_explosion = love.audio.newSource("src/sounds/src_sounds_explosion_player", "static")
-        asteroid_explosion = love.audio.newSource("src/sounds/src_sounds_explosion_asteroid", "static")
-        laser = love.audio.newSource("src/sounds/src_sounds_laser", "static")
-        option_select = love.audio.newSource("src/sounds/src_sounds_option_select", "static")
-        thruster_loud = love.audio.newSource("src/sounds/src_sounds_thruster_loud", "static")
-        thruster = love.audio.newSource("src/sounds/src_sounds_thruster", "static")
+        ship_explosion = love.audio.newSource("src/sounds/src_sounds_explosion_player.ogg", "static"),
+        asteroid_explosion = love.audio.newSource("src/sounds/src_sounds_explosion_asteroid.ogg", "static"),
+        laser = love.audio.newSource("src/sounds/src_sounds_laser.ogg", "static"),
+        option_select = love.audio.newSource("src/sounds/src_sounds_option_select.ogg", "static"),
+        thruster_loud = love.audio.newSource("src/sounds/src_sounds_thruster_loud.ogg", "static"),
+        thruster = love.audio.newSource("src/sounds/src_sounds_thruster.ogg", "static"),
     }
 
     return{
-        fx_played = false
+        fx_played = false,
 
         setFXPlayed = function (self, has_played)
             self.fx_played = has_played
