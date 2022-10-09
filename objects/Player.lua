@@ -9,6 +9,7 @@ function Player(num_lives)
     local VIEW_ANGLE = math.rad(90)
     local LAZER_DISTANCE = 0.6
     local MAX_LAZERS = 10
+    local USABLE_BLINKS = 10 * 2
 
     return {
         x = love.graphics.getWidth() / 2,
@@ -18,6 +19,9 @@ function Player(num_lives)
         rotation = 0,
         expload_time = 0,
         exploading = false,
+        invincible = true,
+        invincible_seen = true,
+        time_blinked = USABLE_BLINKS,
         lazers={},
         thrusting = false,
         thrust = {
@@ -30,6 +34,10 @@ function Player(num_lives)
         lives = num_lives or 3,
 
         draw_flame_thrust = function (self, fillType, color)
+            if self.invincible_seen then
+                table.insert(color, 0.5)
+            end
+
             love.graphics.setColor(color)
             
             love.graphics.polygon(
@@ -87,6 +95,12 @@ function Player(num_lives)
                     love.graphics.setColor(1, 0, 0, opacity)
                     love.graphics.rectangle("fill", self.x -1, self.y-1, 2, 2)
                     love.graphics.circle("line", self.x, self.y, self.radius)
+                end
+
+                if self.invincible_seen then
+                    love.graphics.setColor(1, 1, 1, faded and opacity or 0.5)
+                else 
+                    love.graphics.setColor(1, 1, 1, opacity)
                 end
     
                 love.graphics.setColor(1, 1, 1, opacity)
@@ -151,8 +165,26 @@ function Player(num_lives)
 
         end, 
 
-            movePlayer = function(self)
+            movePlayer = function(self, dt)
+                if self.invincible then
+                    self.time_blinked = self.time_blinked - dt *2
+                    
+                    if math.ceil(self.time_blinked) % 2 == 0 then
+                        self.invincible_seen = false
+                    else 
+                        self.invincible_seen = true
+                    end
+
+                    if self.time_blinked <= 0 then
+                        self.invincible = false
+                    end
+                else
+                    self.time_blinked = USABLE_BLINKS
+                    self.invincible_seen = false
+                end
+
                 self.exploading = self.expload_time > 0
+                
                 if not self.exploading then 
                     local FPS = love.timer.getFPS()
                     local friction = 0.7

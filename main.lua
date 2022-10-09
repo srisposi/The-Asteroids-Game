@@ -12,7 +12,7 @@ function love.load()
     local save_data = readJSON("save")
     mouse_x, mouse_y = 0, 0
 
-    player = Player()
+    player = Player(4)
     game = Game(save_data)
     menu = Menu(game, player)
 end                                                          
@@ -57,10 +57,10 @@ function love.update(dt)
     mouse_x, mouse_y = love.mouse.getPosition()
     
     if game.state.running then
-        player:movePlayer()
+        player:movePlayer(dt)
 
         for ast_index, asteroid in pairs(asteroids) do
-            if not player.exploading then
+            if not player.exploading and not player.invincible then
                 if calculateDistance(player.x, player.y, asteroid.x, asteroid.y) < asteroid.radius then
                     player:expload()
                     destroy_ast = true
@@ -96,6 +96,12 @@ function love.update(dt)
             end
             asteroid:move(dt)
         end
+
+        if #asteroids == 0 then
+            game.level = game.level +1
+            game:startNewGame(player)
+        end
+
     elseif game.state.menu then
         menu:run(clickedMouse)
         clickedMouse = false
