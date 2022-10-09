@@ -17,3 +17,11 @@ function readJSON(file_name) --save.json
 
     return lunajson.decode(data);
 end
+
+function writeJSON(file_name, data) --write.json
+    local file = io.open("src/data/" .. file_name .. ".json", "w")
+    file:write(lunajson.encode(data))
+    file:close()
+
+    return lunajson.decode(data);
+end
