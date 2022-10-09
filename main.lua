@@ -5,16 +5,24 @@ local Game = require "./states/Game"
 local Text = require "../components/Text"
 local Menu = require "./states/Menu"
 
+local resetComplete = false
 math.randomseed(os.time())
+
+function reset()
+    local save_data = readJSON("save")
+
+    player = Player(3)
+    game = Game(save_data)
+    menu = Menu(game, player)
+    destroy_ast = false
+end
 
 function love.load()
     love.mouse.setVisible(false)
-    local save_data = readJSON("save")
+
     mouse_x, mouse_y = 0, 0
 
-    player = Player(4)
-    game = Game(save_data)
-    menu = Menu(game, player)
+    reset()
 end                                                          
 
 function love.keypressed(key)
@@ -105,6 +113,14 @@ function love.update(dt)
     elseif game.state.menu then
         menu:run(clickedMouse)
         clickedMouse = false
+
+        if not resetComplete then
+             reset()
+
+             resetComplete = true
+        end
+    elseif game.state.ended then
+        resetComplete = false
     end
 end              
 
