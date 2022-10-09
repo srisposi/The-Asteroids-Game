@@ -23,5 +23,4 @@ function writeJSON(file_name, data) --write.json
     file:write(lunajson.encode(data))
     file:close()
 
-    return lunajson.decode(data);
 end
