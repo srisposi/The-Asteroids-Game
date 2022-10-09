@@ -13,12 +13,35 @@ function Game(save_data)
         },
         score = 0,
         high_score = save_data.high_score or 0,
+        screen_text = {},
+        game_over_showing = false,
 
         changeGameState = function (self, state)
             self.state.menu = state == "menu"
             self.state.paused = state == "paused"
             self.state.running = state == "running"
             self.state.ended = state == "ended"
+            
+            if self.state.ended then
+                self:gameOver()
+            end
+        end,
+
+        gameOver = function(self)
+            self.screen_text = {
+                Text(
+                    "GAME OVER",
+                    0,
+                    love.graphics.getHeight() * 0.4,
+                    "h1",
+                    true,
+                    true,
+                    love.graphics.getWidth(),
+                    "center"
+                )
+            }
+
+            self.game_over_showing = true
         end,
 
         draw = function(self, faded)
@@ -26,6 +49,18 @@ function Game(save_data)
 
             if faded then
                 opacity = 0.5
+            end
+
+            for index, text in pairs(self.screen_text) do
+                if self.game_over_showing then
+                    self.game_over_showing = text:draw(self.screen_text, index)
+
+                    if not self.game_over_showing then
+                        self:changeGameState("menu")
+                    end
+                else
+                    text:draw(self.screen_text, index)    
+                end
             end
 
             Text(

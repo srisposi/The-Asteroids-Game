@@ -114,6 +114,9 @@ function love.draw()
         game:draw(game.state.paused)
     elseif game.state.menu then 
         menu:draw()
+    elseif game.state.ended then
+        game:draw()
+        
     end
     
     love.graphics.setColor(1, 1, 1, 1)
