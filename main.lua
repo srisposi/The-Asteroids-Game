@@ -74,7 +74,7 @@ function love.update(dt)
 
         for ast_index, asteroid in pairs(asteroids) do
             if not player.exploading and not player.invincible then
-                if calculateDistance(player.x, player.y, asteroid.x, asteroid.y) < asteroid.radius then
+                if calculateDistance(player.x, player.y, asteroid.x, asteroid.y) <  player.radius + asteroid.radius then
                     player:expload()
                     destroy_ast = true
                 end
