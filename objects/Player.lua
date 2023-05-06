@@ -13,7 +13,7 @@ function Player(num_lives, sfx)
 
     return {
         x = love.graphics.getWidth() / 2,
-        y = love.graphics.getWidth() / 2,
+        y = love.graphics.getHeight() / 2,
         radius = SHIP_SIZE / 2,
         angle = VIEW_ANGLE,
         rotation = 0,
@@ -231,7 +231,7 @@ function Player(num_lives, sfx)
                     end
                 end
                     for index, lazer in pairs(self.lazers) do
-                        lazer:move()
+                        --lazer:move()
                         
                         if (lazer.distance > LAZER_DISTANCE * love.graphics.getWidth())
                         and (lazer.exploading == 0) then
@@ -248,6 +248,7 @@ function Player(num_lives, sfx)
                 end,
 
                 expload = function(self)
+                    sfx:playFX("ship_explosion")
                     self.expload_time = math.ceil(EXPLOAD_DUR * love.timer.getFPS())
                 end    
         } 

@@ -144,7 +144,7 @@ function Game(save_data, sfx)
                     as_y = math.floor(math.random(love.graphics.getHeight()))
                 until calculateDistance(player.x, player.y, as_x, as_y) > ASTEROID_SIZE * 2 + player.radius
 
-                table.insert(asteroids, 1, Asteroids(as_x, as_y, ASTEROID_SIZE, self.level, sfx))
+                table.insert(asteroids, i, Asteroids(as_x, as_y, ASTEROID_SIZE, self.level, sfx))
             end
 
 

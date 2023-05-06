@@ -27,7 +27,7 @@ function love.load()
 
     reset()
 
-    sfx:playBGM()
+    sfx.playBGM()
 end                                                          
 
 function love.keypressed(key)
